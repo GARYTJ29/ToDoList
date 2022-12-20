@@ -106,7 +106,7 @@ def loginapi():
     resp = jsonify({'login': True})
     set_access_cookies(resp, access_token)
     set_refresh_cookies(resp, refresh_token)
-    return redirect(url_for("home")), 302
+    return redirect(url_for("home")), 200
 
 # Same thing as login here, except we are only setting a new cookie
 # for the access token.
