@@ -1,6 +1,4 @@
-
-
-from flask import Flask, jsonify, request, redirect, render_template, url_for
+from flask import Flask, jsonify, request, redirect, render_template, url_for, make_response
 from flask.helpers import url_for
 from flask_cors import CORS, cross_origin
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -106,7 +104,10 @@ def loginapi():
     resp = jsonify({'login': True})
     set_access_cookies(resp, access_token)
     set_refresh_cookies(resp, refresh_token)
-    return redirect(url_for("home")), 200
+    response = make_response(redirect(url_for("home")))
+    response.set_cookie('access_token_cookie', access_token)
+    response.set_cookie('refresh_token_cookie', refresh_token)
+    return response
 
 # Same thing as login here, except we are only setting a new cookie
 # for the access token.
