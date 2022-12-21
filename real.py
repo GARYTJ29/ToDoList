@@ -46,11 +46,13 @@ def home():
     holder = list()
     currentCollection = tasksDB.tasks
     k=1
+    err = session.get("errortask","")
+    session["errortask"]=""
     for i in currentCollection.find({"owner":user.get("email","")}):
         i['num'] = k
         k+=1
         holder.append(i)
-    return render_template("base.html",taskdata = holder)
+    return render_template("base.html",taskdata = holder,err=err)
 @app.route("/signup")
 def signup():
     return render_template("login.html",signup=True, error = session.get("errorLogin",[[],[]]))
@@ -61,9 +63,11 @@ def update(id):
     currentCollection = tasksDB.tasks
     oid = ObjectId(id)
     k=1
+    err = session.get("errortask","")
+    session["errortask"]=""
     for i in currentCollection.find({'_id':oid}):
         a=i
-    return render_template("Task.html", a = a)
+    return render_template("Task.html", a = a,err=err)
 
 
 @app.route('/signupapi', methods = ['POST'])
@@ -163,6 +167,9 @@ def addTask():
     owner = user.get("email","none")
     currentCollection = tasksDB.tasks
     task = request.form.get("title")
+    if task == "":
+        session["errortask"] = "Task Name can't be Blank"
+        return redirect(url_for('home'))
     currentCollection.insert_one({'owner' : owner, "task":task})
     resp = jsonify({'created': True})
 
@@ -180,6 +187,9 @@ def updateData(id):
     currentCollection = tasksDB.tasks
     oid = ObjectId(id)
     task = request.form.get("title")
+    if task == "":
+        session["errortask"] = "Task Name can't be Blank"
+        return redirect(f'/update/{id}')
     currentCollection.update_one({'_id':oid}, {"$set" : {'task' : task}})
     return redirect(url_for('home'))
 

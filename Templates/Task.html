@@ -19,6 +19,7 @@
     <div class="ui container"><div class="ui input" ><div class="ui header" style = " padding-right: 15px; padding-top: 15px;" ><p> Title :  </div>
        <input type="text"  name="title" value="{{ a.task }}" style = " padding-bottom: 15px; "/>
     </div> </p></div>
+    <p style="color:red;">{{err}}</p>
 <div style = "padding-top: 10px;">
     <button class="ui blue button" type="submit">Update</button>
     <a class="ui red button" href="/deleteTask/{{ a._id }}">Delete</a>
