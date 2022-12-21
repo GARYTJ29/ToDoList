@@ -175,7 +175,7 @@ def deleteData(id):
     currentCollection.delete_one({'_id' : oid})
     return redirect(url_for('home'))
 
-@app.route('/updateTask/<id>', methods = ['PUT'])
+@app.route('/updateTask/<id>', methods = ['POST'])
 def updateData(id):
     currentCollection = tasksDB.tasks
     oid = ObjectId(id)
