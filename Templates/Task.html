@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <title>
+    Update Task
+  </title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+<body>
+  <div class="ui inverted attached stackable menu">
+    <a class="ui aligned item" href="/tasks">To Do App</a>
+      <div class="right item">
+        <a class="ui inverted button" href="/logout">Logout</a>
+        
+      </div>
+    </div>
+  <form action="/updateTask/{{ a._id }}" method="put">
+  <div class="ui container segment">
+    <div class="ui container"><div class="ui input" ><div class="ui header" style = " padding-right: 15px; padding-top: 15px;" ><p> Title :  </div>
+       <input type="text"  name="title" value="{{ a.task }}" style = " padding-bottom: 15px; "/>
+    </div> </p></div>
+<div style = "padding-top: 10px;">
+    <button class="ui blue button" type="submit">Update</button>
+    <a class="ui red button" href="/deleteTask/{{ a._id }}">Delete</a>
+    </div></div>
+  </form>
+</body>
+</html>

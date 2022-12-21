@@ -12,8 +12,19 @@
 </head>
 
 <body>
+    
+        <div class="ui inverted attached stackable menu">
+        <a class="ui aligned item" href="/tasks">To Do App</a>
+          <div class="right item">
+            <a class="ui inverted button" href="/logout">Logout</a>
+            
+          </div>
+        </div>
+      
+            
+   
     <div style="margin-top: 50px;" class="ui container">
-        <h1 class="ui center aligned header">To Do App</h1>
+        
 
         <form class="ui form" action="/tasksapi" method="post">
             <div class="field">
@@ -29,13 +40,13 @@
         <div class="ui segment">
             <p class="ui big header">{{a.num}} | {{ a.task }}</p>
 
-            {% if a.complete == False %}
+            <!-- {% if a.complete == False %}
             <span class="ui gray label">Not Complete</span>
             {% else %}
             <span class="ui green label">Completed</span>
-            {% endif %}
+            {% endif %} -->
 
-            <a class="ui blue button" href="/updateTask/{{ a._id }}">Update</a>
+            <a class="ui blue button" href="/update/{{ a._id }}">Update</a>
             <a class="ui red button" href="/deleteTask/{{ a._id }}">Delete</a>
             </div>
             {% set iterated = iterated + 1 %}

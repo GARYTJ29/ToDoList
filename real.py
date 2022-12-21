@@ -54,10 +54,16 @@ def home():
 @app.route("/signup")
 def signup():
     return render_template("login.html",signup=True, error = session.get("errorLogin",[[],[]]))
-@app.route("/add", methods=["POST"])
-def add():
-    title = request.form.get("title")
-    return redirect(url_for("home"))
+    
+@app.route("/update/<id>")
+@jwt_required()
+def update(id):
+    currentCollection = tasksDB.tasks
+    oid = ObjectId(id)
+    k=1
+    for i in currentCollection.find({'_id':oid}):
+        a=i
+    return render_template("Task.html", a = a)
 
 
 @app.route('/signupapi', methods = ['POST'])
@@ -133,9 +139,9 @@ def loginapi():
 
 @app.route('/logout')
 def logout():
-    resp = jsonify({'logout': True})
+    resp = redirect(url_for("login"))
     unset_jwt_cookies(resp)
-    return resp, 200
+    return resp
 
 #tasks rotuer below
 @app.route('/tasksapi', methods = ['GET'])
@@ -169,11 +175,12 @@ def deleteData(id):
     currentCollection.delete_one({'_id' : oid})
     return redirect(url_for('home'))
 
-@app.route('/updateTask/<id>')
+@app.route('/updateTask/<id>', methods = ['PUT'])
 def updateData(id):
     currentCollection = tasksDB.tasks
-    task = request.json['task']
-    currentCollection.update_one({'_id':id}, {"$set" : {'task' : task}})
+    oid = ObjectId(id)
+    task = request.form.get("title")
+    currentCollection.update_one({'_id':oid}, {"$set" : {'task' : task}})
     return redirect(url_for('home'))
 
 if __name__ == '__main__':
