@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request, redirect, render_template, url_for, make_response
+from flask import Flask, jsonify, request, redirect, render_template, url_for, make_response, session
 from flask.helpers import url_for
 from flask_cors import CORS, cross_origin
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -11,11 +11,11 @@ import json
 from pymongo import MongoClient
 import bson.json_util as json_util
 from bson import ObjectId
+from flask_session import Session
 
 client = MongoClient('mongodb+srv://madhav:qjPrL48Kwa6kBKf2@flask-todo.y66rx9x.mongodb.net/?retryWrites=true&w=majority')
 tasksDB=client.tasks
 usersDB=client.users
-
 app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_Headers'] = 'Content-Type'
@@ -23,7 +23,9 @@ app.config['JWT_TOKEN_LOCATION'] = ['cookies']
 app.config['JWT_COOKIE_CSRF_PROTECT'] = False
 app.config['JWT_SECRET_KEY'] = 'super-secret'
 app.config['SECRET_KEY'] = 'super-secret'
-
+app.config["SESSION_PERMANENT"] = False
+app.config["SESSION_TYPE"] = "filesystem"
+Session(app)
 jwt = JWTManager(app)
 
 # if u get cross origin error then use the below method before the router function
@@ -31,11 +33,11 @@ jwt = JWTManager(app)
 
 
 #users router below
-API_Server = ""
+
 
 @app.route("/")
 def login():
-    return render_template("login.html",signup=False)
+    return render_template("login.html",signup=False,error = session.get("errorLogin",[[],[]]))
 @app.route("/tasks")
 @jwt_required()
 def home():
@@ -48,10 +50,10 @@ def home():
         i['num'] = k
         k+=1
         holder.append(i)
-    return render_template("base.html",taskdata = holder,error =2)
+    return render_template("base.html",taskdata = holder)
 @app.route("/signup")
 def signup():
-    return render_template("login.html",signup=True)
+    return render_template("login.html",signup=True, error = session.get("errorLogin",[[],[]]))
 @app.route("/add", methods=["POST"])
 def add():
     title = request.form.get("title")
@@ -69,7 +71,8 @@ def signupapi():
 
     data = currentCollection.find_one({"email" : email})
     if data:
-        return jsonify({'signup': False,"error":"user already  exists"}), 400
+        session["errorLogin"]=[[],["user already  exists"]]
+        return redirect(url_for('signup'))
     password = generate_password_hash(request.form.get("password"), method='sha256')
     currentCollection.insert_one({'name' : name, 'email' : email, 'password' : password})
    
@@ -92,8 +95,12 @@ def loginapi():
     password = request.form.get("password")
     currentCollection = usersDB.users
     data = currentCollection.find_one({"email" : email})
-    if not data or not check_password_hash(data["password"],password):
-        return jsonify({'login': False}), 401
+    if not data:
+        session["errorLogin"]=[["User not found"],[]]
+        return redirect(url_for("login"))
+    if not check_password_hash(data["password"],password):
+        session["errorLogin"]=[["Incorrect Password"],[]]
+        return redirect(url_for("login"))
     user=json.dumps({'name' : data['name'], 'email' : data['email']})
 
     # Create the tokens we will be sending back to the user
