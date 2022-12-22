@@ -21,6 +21,7 @@ def taskRouter(app,tasksDB):
         currentCollection = tasksDB.tasks
         for i in currentCollection.find({"owner":user.get("email","")}):
             holder.append(i)
+        print(holder)
         return json_util.dumps(holder)
 
     @app.route('/tasksapi', methods = ['POST'])
@@ -31,15 +32,14 @@ def taskRouter(app,tasksDB):
         owner = user.get("email","none")
         currentCollection = tasksDB.tasks
         task = request.form.get("title")
+        taskPriority = int(request.form.get("priority")) if request.form.get("priority") else 3
         taskdate = request.form.get("datetime")
         taskrepeat = request.form.getlist("repeat") 
         #print(request.form)
         if task == "":
             session["errortask"] = "Task Name can't be Blank"
             return redirect(url_for('home'))
-        
-        
-        currentCollection.insert_one({'owner' : owner, "task":task , "date" : taskdate, "repeat" : taskrepeat})
+        currentCollection.insert_one({'owner' : owner, "task":task , "date" : taskdate, "repeat" : taskrepeat,"priority":taskPriority })
         return redirect(url_for("home"))
 
     @app.route('/deleteTask/<id>')

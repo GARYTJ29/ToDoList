@@ -32,6 +32,12 @@ def pagesRouter(app,tasksDB):
             i['num'] = k
             k+=1
             holder.append(i)
+        
+        #shows newer tasks first
+        holder.reverse() 
+        #sorts accoring to priority
+        holder.sort(key=lambda x: x.get('priority',3))
+        
         return render_template("base.html",taskdata = holder,err=err)
 
 

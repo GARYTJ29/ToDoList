@@ -63,8 +63,29 @@
                 <label>Repeat Task</label>
               </div>
             </div>
+            <div class="three wide column">
+              <div class="ui checkbox">
+                <input type="checkbox" id="hasPriority" />
+                <label>Set Priority</label>
+              </div>
+            </div>
           </div>
-          <div class="datetime-div" style="display: none" id="date-time-picker">
+
+          <div style="display: none; margin-bottom: 0.7%" id="select-priority">
+            <label style="padding-right: 0.8%">Set Priority</label>
+            <select name="priority" class="ui dropdown">
+              <option value="">Select Priority</option>
+              <option value="0">High</option>
+              <option value="1">Medium</option>
+              <option value="2">Low</option>
+            </select>
+          </div>
+
+          <div
+            class="datetime-div"
+            style="display: none; margin-bottom: 0.7%"
+            id="date-time-picker"
+          >
             <label>Date and Time</label>
             <div class="ui calendar" id="date-time-picker">
               <div class="ui input left icon">
@@ -73,7 +94,7 @@
               </div>
             </div>
           </div>
-          </select>
+
           <div style="display: none" id="select-days">
             <label>Select repeating days</label>
             <select name="repeat" multiple="" class="ui fluid dropdown">
@@ -85,22 +106,7 @@
               <option value="Thursday">Thursday</option>
               <option value="Friday">Friday</option>
               <option value="Saturday">Saturday</option>
-              
             </select>
-            <!-- <div class="ui fluid multiple search selection dropdown">
-              <input name="repeat" type="hidden" />
-              <i class="dropdown icon"></i>
-              <div class="default text">Select</div>
-              <div class="menu">
-                <div class="item" data-value="monday">Monday</div>
-                <div class="item" data-value="tuesday">Tuesday</div>
-                <div class="item" data-value="wednesday">Wednesday</div>
-                <div class="item" data-value="thursday">Thursday</div>
-                <div class="item" data-value="friday">Friday</div>
-                <div class="item" data-value="saturday">Saturday</div>
-                <div class="item" data-value="sunday">Sunday</div>
-              </div>
-            </div> -->
           </div>
 
           <p style="color: red">{{err}}</p>
@@ -115,10 +121,9 @@
         <p class="ui big header">Task Name: {{ a.task }}</p>
         {% if a.get("date","") != "" %}
         <p class="ui big header">Task Deadline: {{ a.date }}</p>
-        {% endif %}
-        {% if a.get("repeat",[]) != [] %}
-        <p class="ui big header">Task Repeat: 
-          {% for day in a.repeat %}
+        {% endif %} {% if a.get("repeat",[]) != [] %}
+        <p class="ui big header">
+          Task Repeat: {% for day in a.repeat %}
           <span class="ui gray label">{{ day }} </span>
           {% endfor %}
         </p>
@@ -143,12 +148,13 @@
       $("#repeats").click(function () {
         $("#select-days").toggle();
       });
+      $("#hasPriority").click(function () {
+        $("#select-priority").toggle();
+      });
       $(".tag .ui.dropdown").dropdown({
         allowAdditions: true,
       });
-      $('select.dropdown')
-  .dropdown('set selected')
-;
+      $("select.dropdown").dropdown("set selected");
     </script>
   </body>
 </html>
