@@ -1,1 +1,3 @@
 /.venv
+flask_session
+flask_todo_list
