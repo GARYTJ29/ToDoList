@@ -116,8 +116,12 @@
         {% if a.get("date","") != "" %}
         <p class="ui big header">Task Deadline: {{ a.date }}</p>
         {% endif %}
-        {% if a.get("repeat","") != "" %}
-        <p class="ui big header">Task Repeat: {{ a.repeat }}</p>
+        {% if a.get("repeat",[]) != [] %}
+        <p class="ui big header">Task Repeat: 
+          {% for day in a.repeat %}
+          <span class="ui gray label">{{ day }} </span>
+          {% endfor %}
+        </p>
         {% endif %}
         <!-- {% if a.get("date","") != "" %}
             <span class="ui gray label">Not Complete</span>

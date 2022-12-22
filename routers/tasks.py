@@ -32,10 +32,12 @@ def taskRouter(app,tasksDB):
         currentCollection = tasksDB.tasks
         task = request.form.get("title")
         taskdate = request.form.get("datetime")
-        taskrepeat = request.form.get("repeat") 
+        taskrepeat = request.form.getlist("repeat") 
+        print(request.form)
         if task == "":
             session["errortask"] = "Task Name can't be Blank"
             return redirect(url_for('home'))
+        
         
         currentCollection.insert_one({'owner' : owner, "task":task , "date" : taskdate, "repeat" : taskrepeat})
         return redirect(url_for("home"))
