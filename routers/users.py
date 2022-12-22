@@ -19,31 +19,44 @@ def userRouter(app,usersDB):
         # email = request.json['email']
         name = request.form.get("name")
         email = request.form.get("email") 
-
+        if email == "":
+            session["errorLogin"]=[[],["Email can't be blank"]]
+            return redirect(url_for("signup"))
         data = currentCollection.find_one({"email" : email})
         if data:
             session["errorLogin"]=[[],["user already  exists"]]
             return redirect(url_for('signup'))
+        if request.form.get("password") == "":
+            session["errorLogin"]=[[],["Password can't be blank"]]
+            return redirect(url_for("signup"))
         password = generate_password_hash(request.form.get("password"), method='sha256')
         currentCollection.insert_one({'name' : name, 'email' : email, 'password' : password})
     
-        user=json.dumps({'name' : name, 'email' :email})
+        
 
         # Create the tokens we will be sending back to the user
-        access_token = create_access_token(identity=user)
-        refresh_token = create_refresh_token(identity=user)
+        
 
         # Set the JWT cookies in the response
-        resp = jsonify({'signup': True})
+        resp = redirect(url_for('login'))
+        #Uncomment this to get access token while signing up
+        '''
+        user=json.dumps({'name' : name, 'email' :email})
+        access_token = create_access_token(identity=user)
+        refresh_token = create_refresh_token(identity=user)
         set_access_cookies(resp, access_token)
         set_refresh_cookies(resp, refresh_token)
+        '''
         #return {'signup': True}, 200
-        return redirect(url_for('login'))
+        return resp
 
     @app.route('/loginapi', methods=['POST'])
     def loginapi():
         email = request.form.get("email")
         password = request.form.get("password")
+        if email == "":
+            session["errorLogin"]=[["Email can't be blank"],[]]
+            return redirect(url_for("login"))
         currentCollection = usersDB.users
         data = currentCollection.find_one({"email" : email})
         if not data:
@@ -59,12 +72,9 @@ def userRouter(app,usersDB):
         refresh_token = create_refresh_token(identity=user)
 
         # Set the JWT cookies in the response
-        resp = jsonify({'login': True})
-        set_access_cookies(resp, access_token)
-        set_refresh_cookies(resp, refresh_token)
         response = make_response(redirect(url_for("home")))
-        response.set_cookie('access_token_cookie', access_token)
-        response.set_cookie('refresh_token_cookie', refresh_token)
+        set_access_cookies(response, access_token)
+        set_refresh_cookies(response, refresh_token)
         return response
 
     

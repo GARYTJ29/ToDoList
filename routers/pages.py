@@ -14,7 +14,9 @@ from bson import ObjectId
 def pagesRouter(app,tasksDB):
     @app.route("/")
     def login():
-        return render_template("login.html",signup=False,error = session.get("errorLogin",[[],[]]))
+        error = session.get("errorLogin",[[],[]])
+        session["errorLogin"] = [[],[]]
+        return render_template("login.html",signup=False,error = error)
 
     @app.route("/tasks")
     @jwt_required()
@@ -35,7 +37,9 @@ def pagesRouter(app,tasksDB):
 
     @app.route("/signup")
     def signup():
-        return render_template("login.html",signup=True, error = session.get("errorLogin",[[],[]]))
+        error = session.get("errorLogin",[[],[]])
+        session["errorLogin"] = [[],[]]
+        return render_template("login.html",signup=True, error = error)
         
     @app.route("/update/<id>")
     @jwt_required()
