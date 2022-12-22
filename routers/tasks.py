@@ -31,6 +31,7 @@ def taskRouter(app,tasksDB):
         owner = user.get("email","none")
         currentCollection = tasksDB.tasks
         task = request.form.get("title")
+        print(request.form)
         if task == "":
             session["errortask"] = "Task Name can't be Blank"
             return redirect(url_for('home'))
