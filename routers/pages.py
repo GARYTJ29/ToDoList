@@ -27,7 +27,7 @@ def pagesRouter(app,tasksDB):
         currentCollection = tasksDB.tasks
         k=1
         err = session.get("errortask","")
-        session["errortask"]=""
+        session["errortask"] = ""
         for i in currentCollection.find({"owner":user.get("email","")}):
             i['num'] = k
             k+=1
@@ -46,9 +46,7 @@ def pagesRouter(app,tasksDB):
     def update(id):
         currentCollection = tasksDB.tasks
         oid = ObjectId(id)
-        k=1
         err = session.get("errortask","")
-        
-        for i in currentCollection.find({'_id':oid}):
-            a=i
+        session["errortask"] = ""
+        a = currentCollection.find({'_id':oid})[0]
         return render_template("Task.html", a = a,err=err)
