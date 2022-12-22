@@ -31,11 +31,13 @@ def taskRouter(app,tasksDB):
         owner = user.get("email","none")
         currentCollection = tasksDB.tasks
         task = request.form.get("title")
-        print(request.form)
+        taskdate = request.form.get("datetime")
+        taskrepeat = request.form.get("repeat") 
         if task == "":
             session["errortask"] = "Task Name can't be Blank"
             return redirect(url_for('home'))
-        currentCollection.insert_one({'owner' : owner, "task":task})
+        
+        currentCollection.insert_one({'owner' : owner, "task":task , "date" : taskdate, "repeat" : taskrepeat})
         return redirect(url_for("home"))
 
     @app.route('/deleteTask/<id>')

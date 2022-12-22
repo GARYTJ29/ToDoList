@@ -73,10 +73,22 @@
               </div>
             </div>
           </div>
+          </select>
           <div style="display: none" id="select-days">
             <label>Select repeating days</label>
-            <div class="ui fluid multiple search selection dropdown">
-              <input name="s" type="hidden" />
+            <select name="repeat" multiple="" class="ui fluid dropdown">
+              <option value="">Select Repeating Days</option>
+              <option value="Sunday">Sunday</option>
+              <option value="Monday">Monday</option>
+              <option value="Tuesday">Tuesday</option>
+              <option value="Wednesday">Wednesday</option>
+              <option value="Thursday">Thursday</option>
+              <option value="Friday">Friday</option>
+              <option value="Saturday">Saturday</option>
+              
+            </select>
+            <!-- <div class="ui fluid multiple search selection dropdown">
+              <input name="repeat" type="hidden" />
               <i class="dropdown icon"></i>
               <div class="default text">Select</div>
               <div class="menu">
@@ -88,7 +100,7 @@
                 <div class="item" data-value="saturday">Saturday</div>
                 <div class="item" data-value="sunday">Sunday</div>
               </div>
-            </div>
+            </div> -->
           </div>
 
           <p style="color: red">{{err}}</p>
@@ -100,9 +112,14 @@
 
       {% for a in taskdata %}
       <div class="ui segment">
-        <p class="ui big header">{{a.num}} | {{ a.task }}</p>
-
-        <!-- {% if a.complete == False %}
+        <p class="ui big header">Task Name: {{ a.task }}</p>
+        {% if a.get("date","") != "" %}
+        <p class="ui big header">Task Deadline: {{ a.date }}</p>
+        {% endif %}
+        {% if a.get("repeat","") != "" %}
+        <p class="ui big header">Task Repeat: {{ a.repeat }}</p>
+        {% endif %}
+        <!-- {% if a.get("date","") != "" %}
             <span class="ui gray label">Not Complete</span>
             {% else %}
             <span class="ui green label">Completed</span>
@@ -125,6 +142,9 @@
       $(".tag .ui.dropdown").dropdown({
         allowAdditions: true,
       });
+      $('select.dropdown')
+  .dropdown('set selected', ['meteor', 'ember'])
+;
     </script>
   </body>
 </html>
