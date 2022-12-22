@@ -1,18 +1,13 @@
-from flask import Flask, jsonify, request, redirect, render_template, url_for, make_response, session
-from flask.helpers import url_for
+from flask import Flask
 from flask_cors import CORS
-from werkzeug.security import generate_password_hash, check_password_hash
 from flask_jwt_extended import (
-    JWTManager,jwt_required,get_jwt_identity
+    JWTManager,get_jwt_identity,get_jwt,create_access_token,set_access_cookies
 )
-import json
 from pymongo import MongoClient
-import bson.json_util as json_util
-from bson import ObjectId
 from flask_session import Session
-from flask import Flask, render_template
 from flask_bootstrap import Bootstrap
 from flask_datepicker import datepicker
+from datetime import datetime,timedelta,timezone
 
 from routers.pages import pagesRouter
 from routers.tasks import taskRouter
@@ -44,21 +39,21 @@ jwt = JWTManager(app)
 
 # if u get cross origin error then use the below method before the router function
 # @cross_origin()
-@app.route("/tasks")
-@jwt_required()
-def home():
-    tokenData=get_jwt_identity()
-    user = json.loads(tokenData)
-    holder = list()
-    currentCollection = tasksDB.tasks
-    k=1
-    err = session.get("errortask","")
-    session["errortask"]=""
-    for i in currentCollection.find({"owner":user.get("email","")}):
-        i['num'] = k
-        k+=1
-        holder.append(i)
-    return render_template("base.html",taskdata = holder,err=err)
+
+#refreshes the jwt token
+@app.after_request
+def refresh_expiring_jwts(response):
+    try:
+        exp_timestamp = get_jwt()["exp"]
+        now = datetime.now(timezone.utc)
+        target_timestamp = datetime.timestamp(now + timedelta(minutes=30))
+        if target_timestamp > exp_timestamp:
+            access_token = create_access_token(identity=get_jwt_identity())
+            set_access_cookies(response, access_token)
+        return response
+    except (RuntimeError, KeyError):
+        # Case where there is not a valid JWT. Just return the original response
+        return response
 
 pagesRouter(app,tasksDB)
 taskRouter(app,tasksDB)

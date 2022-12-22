@@ -1,4 +1,4 @@
-from flask import Flask, request, redirect,  url_for, session
+from flask import  request, redirect,  url_for, session
 from flask.helpers import url_for
 from flask_jwt_extended import (
   jwt_required, 
@@ -7,10 +7,6 @@ from flask_jwt_extended import (
 import json
 from bson import json_util
 from bson import ObjectId
-from flask_session import Session
-from flask import Flask, render_template
-from flask_bootstrap import Bootstrap
-from flask_datepicker import datepicker
 
 
 def taskRouter(app,tasksDB):

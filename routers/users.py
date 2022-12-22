@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request, redirect, render_template, url_for, make_response, session
+from flask import  jsonify, request, redirect, url_for, make_response, session
 from flask.helpers import url_for
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_jwt_extended import (
@@ -7,10 +7,6 @@ from flask_jwt_extended import (
     set_refresh_cookies, unset_jwt_cookies
 )
 import json
-from flask_session import Session
-from flask import Flask, render_template
-from flask_bootstrap import Bootstrap
-from flask_datepicker import datepicker
 
 
 def userRouter(app,usersDB):
