@@ -19,21 +19,7 @@ def pagesRouter(app,tasksDB):
     def login():
         return render_template("login.html",signup=False,error = session.get("errorLogin",[[],[]]))
 
-    @app.route("/tasks")
-    @jwt_required()
-    def home():
-        tokenData=get_jwt_identity()
-        user = json.loads(tokenData)
-        holder = list()
-        currentCollection = tasksDB.tasks
-        k=1
-        #err = session.get("errortask","")
-        #session["errortask"]=""
-        for i in currentCollection.find({"owner":user.get("email","")}):
-            i['num'] = k
-            k+=1
-            holder.append(i)
-        return render_template("base.html",taskdata = holder,err="")
+    
 
     @app.route("/signup")
     def signup():
@@ -46,7 +32,7 @@ def pagesRouter(app,tasksDB):
         oid = ObjectId(id)
         k=1
         err = session.get("errortask","")
-        session["errortask"]=""
+        
         for i in currentCollection.find({'_id':oid}):
             a=i
         return render_template("Task.html", a = a,err=err)
