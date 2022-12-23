@@ -8,7 +8,7 @@ from bson import ObjectId
 # if u get cross origin error then use the below method before the router function
 # @cross_origin()
 
-
+priorityMap={0:"High Priority",1:"Medium Priority",2:"Low Priority",3:""}
 #pages routes below
 
 def pagesRouter(app,tasksDB):
@@ -31,6 +31,7 @@ def pagesRouter(app,tasksDB):
         for i in currentCollection.find({"owner":user.get("email","")}):
             i['num'] = k
             k+=1
+            i["priority"]=priorityMap[i["priority"]]
             holder.append(i)
         
         #shows newer tasks first
