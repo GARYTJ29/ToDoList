@@ -12,6 +12,7 @@ from datetime import datetime,timedelta,timezone
 from routers.pages import pagesRouter
 from routers.tasks import taskRouter
 from routers.users import userRouter
+from routers.calender import CalpageRouter
 
 app = Flask(__name__)
 app.config.from_object(__name__)
@@ -58,7 +59,7 @@ def refresh_expiring_jwts(response):
 pagesRouter(app,tasksDB)
 taskRouter(app,tasksDB)
 userRouter(app,usersDB)
-
+CalpageRouter(app,tasksDB)
 
 if __name__ == '__main__':
     app.run(debug = True)
