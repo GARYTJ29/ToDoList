@@ -107,7 +107,7 @@
     $('#repeats').attr('checked', true); 
     $('select.dropdown.repeat').dropdown('set selected', [{% for day in a.repeat %} '{{day}}', {% endfor %}])  
     {% endif %}
-    {% if a.get("priority", "") != "" %}
+    {% if a.get("priority", 3) != 3 %}
     $("#select-priority").toggle();
     $('#hasPriority').attr('checked', true);
     $('select.dropdown.prior').dropdown('set selected', ['{{a.priority}}'])

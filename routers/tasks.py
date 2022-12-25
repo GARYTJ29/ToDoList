@@ -54,10 +54,11 @@ def taskRouter(app,tasksDB):
         currentCollection = tasksDB.tasks
         oid = ObjectId(id)
         task = request.form.get("title")
-        taskdate = request.form.get("datetime")
-        taskrepeat = request.form.getlist("repeat") 
+        taskdate = request.form.get("datetime") if request.form.get("checkdate") else ""
+        taskrepeat = request.form.getlist("repeat") if request.form.get("checkrepeat") else []
+        taskPriority = int(request.form.get("priority")) if request.form.get("checkprior") else 3
         if task == "":
             session["errortask"] = "Task Name can't be Blank"
             return redirect(f'/update/{id}')
-        currentCollection.update_one({'_id':oid}, {"$set" : {'task' : task, "date" : taskdate, "repeat" : taskrepeat }})
+        currentCollection.update_one({'_id':oid}, {"$set" : {'task' : task, "date" : taskdate, "repeat" : taskrepeat,"priority":taskPriority }})
         return redirect(url_for('home'))
