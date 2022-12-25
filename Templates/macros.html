@@ -1,0 +1,68 @@
+
+{% macro nav_bar() %}
+<div class="ui inverted attached stackable menu">
+    <a class="ui aligned item" href="{{ url_for('home') }}">To Do App</a>
+    <a class="ui aligned item" href="{{ url_for('calender') }}">Calender View</a>
+    <div class="right item">
+      <a class="ui inverted button" href="{{ url_for('logout') }}">Logout</a>
+    </div>
+</div>
+{% endmacro %}
+{% macro input_task() %}
+
+    <div class="three wide column">
+      <div class="ui checkbox">
+        <input type="checkbox" id="datetime" />
+        <label>Add Date and Time</label>
+      </div>
+    </div>
+    <div class="three wide column">
+      <div class="ui checkbox">
+        <input type="checkbox" id="repeats" />
+        <label>Repeat Task</label>
+      </div>
+    </div>
+    <div class="three wide column">
+      <div class="ui checkbox">
+        <input type="checkbox" id="hasPriority" />
+        <label>Set Priority</label>
+      </div>
+    </div>
+  </div>
+
+  <div style="display: none; margin-bottom: 0.7%" id="select-priority">
+    <label style="padding-right: 0.8%">Set Priority</label>
+    <select name="priority" class="ui dropdown prior" id="selectPriority">
+      <option value="">Select Priority</option>
+      <option value="0">High</option>
+      <option value="1">Medium</option>
+      <option value="2">Low</option>
+    </select>
+  </div>
+
+  <div class="datetime-div" style="display: none; margin-bottom: 0.7%" id="date-time-picker">
+    <label>Date and Time</label>
+    <div class="ui calendar" id="date-time-picker">
+      <div class="ui input left icon">
+        <i class="calendar icon"></i>
+        <input type="text" name="datetime" placeholder="Date/Time" id="dateDisplay" />
+      </div>
+    </div>
+  </div>
+
+  <div style="display: none" id="select-days">
+    <label>Select repeating days</label>
+    <select name="repeat" multiple="" class="ui fluid dropdown repeat">
+      <option value="">Select Repeating Days</option>
+      <option value="Sunday">Sunday</option>
+      <option value="Monday">Monday</option>
+      <option value="Tuesday">Tuesday</option>
+      <option value="Wednesday">Wednesday</option>
+      <option value="Thursday">Thursday</option>
+      <option value="Friday">Friday</option>
+      <option value="Saturday">Saturday</option>
+    </select>
+  </div>
+
+
+{% endmacro %}

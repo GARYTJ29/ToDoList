@@ -31,7 +31,7 @@ def pagesRouter(app,tasksDB):
         for i in currentCollection.find({"owner":user.get("email","")}):
             i['num'] = k
             k+=1
-            i["priority"]=priorityMap[i["priority"]]
+            i["priority"]=priorityMap[i.get("priority",3)]
             holder.append(i)
         
         #shows newer tasks first
@@ -56,4 +56,5 @@ def pagesRouter(app,tasksDB):
         err = session.get("errortask","")
         session["errortask"] = ""
         a = currentCollection.find({'_id':oid})[0]
+        # a["priority"]=priorityMap[a.get("priority",3)]
         return render_template("Task.html", a = a,err=err)

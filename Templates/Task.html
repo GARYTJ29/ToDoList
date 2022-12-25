@@ -1,66 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <title>Update Task</title>
-    <script
-    src="https://code.jquery.com/ui/1.11.2/jquery-ui.min.js"
-    integrity="sha256-erF9fIMASEVmAWGdOmQi615Bmx0L/vWNixxTNDXS4FQ="
-    crossorigin="anonymous"
-  ></script>
-  <script
-    src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.14/angular.min.js"
+
+<head>
+  <title>Update Task</title>
+  <script src="https://code.jquery.com/ui/1.11.2/jquery-ui.min.js"
+    integrity="sha256-erF9fIMASEVmAWGdOmQi615Bmx0L/vWNixxTNDXS4FQ=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.14/angular.min.js"
     integrity="sha512-bIUdhwNdPRVsQ7a9X93M400wJTBZTp+L5JZFtGb7VJ0da/mQMB7x3EWEdmR2qfcon0WErjJZdCIXBLmtvd0grw=="
-    crossorigin="anonymous"
-    referrerpolicy="no-referrer"
-  ></script>
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
-  <link
-    href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"
-    rel="stylesheet"
-    type="text/css"
-  />
-  <link
-    href="https://cdn.rawgit.com/mdehoog/Semantic-UI/6e6d051d47b598ebab05857545f242caf2b4b48c/dist/semantic.min.css"
-    rel="stylesheet"
-    type="text/css"
-  />
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+  <link href="https://cdn.rawgit.com/mdehoog/Semantic-UI/6e6d051d47b598ebab05857545f242caf2b4b48c/dist/semantic.min.css"
+    rel="stylesheet" type="text/css" />
   <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
   <script src="https://code.jquery.com/jquery-2.1.4.js"></script>
-  <script src="https://cdn.rawgit.com/mdehoog/Semantic-UI/6e6d051d47b598ebab05857545f242caf2b4b48c/dist/semantic.min.js"></script>
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css"
-  />
+  <script
+    src="https://cdn.rawgit.com/mdehoog/Semantic-UI/6e6d051d47b598ebab05857545f242caf2b4b48c/dist/semantic.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css" />
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"></script>
-  </head>
-  <body>
-    <div class="ui inverted attached stackable menu">
-      <a class="ui aligned item" href="/tasks">To Do App</a>
-      <a class="ui aligned item" href="/calender">Calender View</a>
-      <div class="right item">
-        <a class="ui inverted button" href="/logout">Logout</a>
-      </div>
-    </div>
-    <form action="/updateTask/{{ a._id }}" method="post">
-      <div class="ui container segment">
-        <div class="ui container">
-          <div class="ui input">
-            <div
-              class="ui header"
-              style="padding-right: 15px; padding-top: 15px"
-            >
-              <p>Title :</p>
-            </div>
-            <input
-              type="text"
-              name="title"
-              value="{{ a.task }}"
-              style="padding-bottom: 15px"
-            />
+</head>
+
+<body>
+  {% from "macros.html" import nav_bar %}
+  {{ nav_bar() }}
+
+
+  <form action="/updateTask/{{ a._id }}" method="post">
+    <div class="ui container segment">
+      <div class="ui container">
+        <div class="ui input">
+          <div class="ui header" style="padding-right: 15px; padding-top: 15px">
+            <p>Title :</p>
           </div>
-          <div class="ui grid" style="margin-block: 1%">
-            <div class="three wide column">
+          <input type="text" name="title" value="{{ a.task }}" style="padding-bottom: 15px" />
+        </div>
+      </div>
+      <div class="ui grid" style="margin-block: 1%">
+        {% from "macros.html" import input_task %}
+        {{ input_task() }}
+        <!-- <div class="three wide column">
               <div class="ui checkbox">
                 <input type="checkbox" id="datetime" />
                 <label>Add Date and Time</label>
@@ -72,6 +51,15 @@
                 <label>Repeat Task</label>
               </div>
             </div>
+          </div>
+          <div style="display: none; margin-bottom: 0.7%" id="select-priority">
+            <label style="padding-right: 0.8%">Set Priority</label>
+            <select name="priority" class="ui dropdown">
+              <option value="">Select Priority</option>
+              <option value="0">High</option>
+              <option value="1">Medium</option>
+              <option value="2">Low</option>
+            </select>
           </div>
           <div class="datetime-div" style="display: none" id="date-time-picker">
             <label>Date and Time</label>
@@ -96,37 +84,38 @@
               <option value="Saturday">Saturday</option>
               
             </select>
-        </div>
+        </div> -->
         <p style="color: red">{{err}}</p>
         <div style="padding-top: 10px">
           <button class="ui blue button" type="submit">Update</button>
           <a class="ui red button" href="/deleteTask/{{ a._id }}">Delete</a>
         </div>
       </div>
-    </form>
+    </div>
     
-    <script>
-      {% if a.get("date","") != "" %}    
+
+  </form>
+
+  <script>
+    {% if a.get("date", "") != "" %}
     $("#date-time-picker").toggle();
-    $('#datetime').attr('checked', true);     
+    $('#datetime').attr('checked', true);
+    $('#dateDisplay').attr('value', "{{a.date}}");
     {% endif %}
-    {% if a.get("repeat",[]) != [] %}
+    {% if a.get("repeat", []) != [] %}
     $("#select-days").toggle();
     $('#repeats').attr('checked', true); 
+    $('select.dropdown.repeat').dropdown('set selected', [{% for day in a.repeat %} '{{day}}', {% endfor %}])  
     {% endif %}
-      $("#date-time-picker").calendar();
-      $("#datetime").click(function () {
-        $("#date-time-picker").toggle();
-      });
-      $("#repeats").click(function () {
-        $("#select-days").toggle();
-      });
-      $(".tag .ui.dropdown").dropdown({
-        allowAdditions: true,
-      });
-      $('select.dropdown')
-  .dropdown('set selected',[ {% for day in a.repeat %} '{{day}}', {% endfor %}])
-;
-    </script>
-  </body>
+    {% if a.get("priority", "") != "" %}
+    $("#select-priority").toggle();
+    $('#hasPriority').attr('checked', true);
+    $('select.dropdown.prior').dropdown('set selected', ['{{a.priority}}'])
+    {% endif %}
+    
+   
+  </script>
+  <script src="{{ url_for('static',filename='Script/inputTask.js') }}"></script>
+</body>
+
 </html>

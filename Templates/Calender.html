@@ -48,13 +48,8 @@
   </style>
   </head>
   <body>
-    <div class="ui inverted attached stackable menu">
-      <a class="ui aligned item" href="/tasks">To Do App</a>
-      <a class="ui aligned item" href="/calender">Calender View</a>
-      <div class="right item">
-        <a class="ui inverted button" href="/logout">Logout</a>
-      </div>
-    </div>
+    {% from "macros.html" import nav_bar with context %}
+    {{ nav_bar() }}
     <div id='calendar'></div>
     
 
