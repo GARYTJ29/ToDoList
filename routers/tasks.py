@@ -56,7 +56,7 @@ def taskRouter(app,tasksDB):
         task = request.form.get("title")
         taskdate = request.form.get("datetime") if request.form.get("checkdate") else ""
         taskrepeat = request.form.getlist("repeat") if request.form.get("checkrepeat") else []
-        taskPriority = int(request.form.get("priority")) if request.form.get("checkprior") else 3
+        taskPriority = int(request.form.get("priority")) if request.form.get("checkprior") and request.form.get("priority") else 3
         if task == "":
             session["errortask"] = "Task Name can't be Blank"
             return redirect(f'/update/{id}')
