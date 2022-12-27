@@ -104,6 +104,14 @@ document.addEventListener('DOMContentLoaded', function() {
         // {% if a.get("priority",3) == 2 %}
         // color: '#1b3807' 
         // {% endif %}
+        {% if a.get("url","") != "" %}
+        
+        {% if "https://" in a.url or  "http://" in a.url %}
+          url: '{{a.url}}'
+        {% else %}
+          url: 'https://{{a.url}}'
+        {% endif %}
+        {% endif %}
       },
     
     {% endfor %}
