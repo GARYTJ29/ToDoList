@@ -43,7 +43,7 @@ def pagesRouter(app,tasksDB):
         holder.sort(key=lambda x: x.get('prior',3))
         current_date = datetime.now().date()
         tasktdy = []
-        #print(current_date)
+        
         for i in holder:
             if i.get("date") and datetime.strptime(i.get("date"), '%B %d, %Y %H:%M %p').date() >= current_date:
                 if current_date.strftime("%A") in i.get("repeat",[]):
