@@ -112,6 +112,11 @@
     $('#hasPriority').attr('checked', true);
     $('select.dropdown.prior').dropdown('set selected', ['{{a.priority}}'])
     {% endif %}
+    {% if a.get("url", "") != "" %}
+    $("#urlinput").toggle();
+    $('#hasurl').attr('checked', true);
+    $('#urldisplay').attr('value', "{{a.url}}");
+    {% endif %}
     
    
   </script>

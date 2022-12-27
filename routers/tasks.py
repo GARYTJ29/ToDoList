@@ -33,14 +33,15 @@ def taskRouter(app,tasksDB):
         owner = user.get("email","none")
         currentCollection = tasksDB.tasks
         task = request.form.get("title")
-        taskPriority = int(request.form.get("priority")) if request.form.get("priority") else 3
-        taskdate = request.form.get("datetime")
-        taskrepeat = request.form.getlist("repeat") 
+        taskPriority = int(request.form.get("priority"))  if request.form.get("checkprior") and request.form.get("priority") else 3
+        taskdate = request.form.get("datetime") if request.form.get("checkdate") else ""
+        taskrepeat = request.form.getlist("repeat") if request.form.get("checkrepeat") else []
+        taskurl = request.form.get("url") if request.form.get("checkurl")  else ""
         #print(request.form)
         if task == "":
             session["errortask"] = "Task Name can't be Blank"
             return redirect(url_for('home'))
-        currentCollection.insert_one({'owner' : owner, "task":task , "date" : taskdate, "repeat" : taskrepeat,"priority":taskPriority })
+        currentCollection.insert_one({'owner' : owner, "task":task , "date" : taskdate, "repeat" : taskrepeat,"priority":taskPriority, "url"  : taskurl })
         return redirect(url_for("home"))
 
     @app.route('/deleteTask/<id>')
@@ -58,8 +59,9 @@ def taskRouter(app,tasksDB):
         taskdate = request.form.get("datetime") if request.form.get("checkdate") else ""
         taskrepeat = request.form.getlist("repeat") if request.form.get("checkrepeat") else []
         taskPriority = int(request.form.get("priority")) if request.form.get("checkprior") and request.form.get("priority") else 3
+        taskurl = request.form.get("url") if request.form.get("checkurl")  else ""
         if task == "":
             session["errortask"] = "Task Name can't be Blank"
             return redirect(f'/update/{id}')
-        currentCollection.update_one({'_id':oid}, {"$set" : {'task' : task, "date" : taskdate, "repeat" : taskrepeat,"priority":taskPriority }})
+        currentCollection.update_one({'_id':oid}, {"$set" : {'task' : task, "date" : taskdate, "repeat" : taskrepeat,"priority":taskPriority, "url"  : taskurl }})
         return redirect(url_for('home'))

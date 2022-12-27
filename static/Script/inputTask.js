@@ -8,6 +8,9 @@ $("#repeats").click(function () {
 $("#hasPriority").click(function () {
   $("#select-priority").toggle();
 });
+$("#hasurl").click(function () {
+  $("#urlinput").toggle();
+});
 $(".tag .ui.dropdown").dropdown({
   allowAdditions: true,
 });

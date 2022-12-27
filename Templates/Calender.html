@@ -77,7 +77,16 @@ document.addEventListener('DOMContentLoaded', function() {
     {
         title: '{{ a.task }}',
         start: ( new Date('{{ a.date }}')).toISOString(),
-        color: '#ff0000'
+        color: '#ff0000',
+        
+        {% if a.get("url","") != "" %}
+        
+        {% if "https://" in a.url or  "http://" in a.url %}
+          url: '{{a.url}}'
+        {% else %}
+          url: 'https://{{a.url}}'
+        {% endif %}
+        {% endif %}
       },
     {% endif %}
     {% endfor %}

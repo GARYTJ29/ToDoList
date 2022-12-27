@@ -13,7 +13,7 @@
     <div class="three wide column">
       <div class="ui checkbox">
         <input type="checkbox" id="datetime" name="checkdate" />
-        <label>Add Deadline</label>
+        <label>Add Deadline / Date</label>
       </div>
     </div>
     <div class="three wide column">
@@ -29,6 +29,14 @@
       </div>
     </div>
   </div>
+  <div class="three wide column" style = "margin-bottom: 0.7%">
+    <div class="ui checkbox">
+      <input type="checkbox" id="hasurl" name="checkurl" />
+      <label>has URL / meeting link</label>
+
+    </div>
+  </div>
+
 
   <div style="display: none; margin-bottom: 0.7%" id="select-priority">
     <label style="padding-right: 0.8%">Set Priority</label>
@@ -41,7 +49,7 @@
   </div>
 
   <div class="datetime-div" style="display: none; margin-bottom: 0.7%" id="date-time-picker">
-    <label>Date and Time of Deadline</label>
+    <label>Date and Time / Deadline</label>
     <div class="ui calendar" id="date-time-picker">
       <div class="ui input left icon">
         <i class="calendar icon"></i>
@@ -63,6 +71,12 @@
       <option value="Saturday">Saturday</option>
     </select>
   </div>
+  <div class="url-div" style="display: none; margin-bottom: 0.7%" id="urlinput">
+    <label>URL / Meeting Link</label> <br>
+    <div class="ui fluid input" >
+      <input type="text" placeholder="Enter URL / Meeting Link" id="urldisplay"name="url">
+    </div>
+  </div>
 
 
 {% endmacro %}
@@ -83,15 +97,28 @@
       </div>
       {% if a.get("date","") != "" %}
       <div style="margin-bottom: 1.5%" class="ui">
-        <div><b>Deadline:</b> {{ a.date }}</div>
+        <div><b>Deadline / Date:</b> {{ a.date }}</div>
       </div>
 
-      {% endif %} {% if a.get("repeat",[]) != [] %}
+      {% endif %}
+      {% if a.get("repeat",[]) != [] %}
       <p>
         <b> Repeat:</b> {% for day in a.repeat %}
         <span class="ui gray label">{{ day }} </span>
         {% endfor %}
       </p>
+      {% endif %}
+      {% if a.get("url","") != "" %}
+      <div style="margin-bottom: 1.5%" class="ui">
+        
+        <div><b>URL / Link:</b> 
+          {% if "https://" in a.url or  "http://" in a.url%}
+          <a href = "{{ a.url }}">{{ a.url }}</div>
+          {%else%}
+          <a href = "https://{{ a.url }}">{{ a.url }}</div>
+          {% endif %}  
+      </div>
+
       {% endif %}
       <!-- {% if a.get("date","") != "" %}
             <span class="ui gray label">Not Complete</span>
