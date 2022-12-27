@@ -43,16 +43,16 @@ def pagesRouter(app,tasksDB):
         holder.sort(key=lambda x: x.get('prior',3))
         current_date = datetime.now().date()
         tasktdy = []
-        print(current_date)
+        #print(current_date)
         for i in holder:
             if current_date.strftime("%A") in i.get("repeat",[]):
                 tasktdy.append(i)
-            if i.get("date","") != "":
+            elif i.get("date","") != "":
                 date_object = datetime.strptime(i.get("date"), '%B %d, %Y %H:%M %p').date()
                 
                 if current_date == date_object:
                     tasktdy.append(i)
-        print(tasktdy)
+        #print(tasktdy)
         return render_template("base.html",taskdata = holder ,  tasktdy = tasktdy ,err=err)
 
 

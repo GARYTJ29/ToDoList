@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   var calendar = new FullCalendar.Calendar(calendarEl, {
     initialView: 'dayGridMonth',
-    initialDate: '2022-12-07',
+    
     headerToolbar: {
       left: 'prev,next today',
       center: 'title',
@@ -72,11 +72,30 @@ document.addEventListener('DOMContentLoaded', function() {
     {% if a.get("date","") != "" %}
     {
         title: '{{ a.task }}',
-        start: ( new Date('{{ a.date }}')).toISOString()
+        start: ( new Date('{{ a.date }}')).toISOString(),
+        color: '#ff0000'
       },
     {% endif %}
     {% endfor %}
+    {% for a in weekTask %}
+    
+    {
+        title: '{{ a.task }}',
+        start: ( new Date('{{ a.date }}')).toISOString(),
+        // {% if a.get("priority",3) == 0 %}
+        // color: '#ab0707' 
+        // {% endif %}
+        // {% if a.get("priority",3) == 1 %}
+        // color: '#42420b' 
+        // {% endif %}
+        // {% if a.get("priority",3) == 2 %}
+        // color: '#1b3807' 
+        // {% endif %}
+      },
+    
+    {% endfor %}
     ]
+    
   });
 
   calendar.render();
