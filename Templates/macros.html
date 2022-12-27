@@ -66,3 +66,42 @@
 
 
 {% endmacro %}
+
+{% macro taskshow(taskdata) %}
+{% for a in taskdata %}
+    <div class="ui segment">
+      <div style="
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            margin-bottom: 1%;
+          ">
+        <p style="margin: 0; font-size: large"><b>{{ a.task }}</b></p>
+        {% if a.priority != "" %}
+        <span class="ui gray label">{{ a.priority }} </span>
+        {% endif %}
+      </div>
+      {% if a.get("date","") != "" %}
+      <div style="margin-bottom: 1.5%" class="ui">
+        <div><b>Deadline:</b> {{ a.date }}</div>
+      </div>
+
+      {% endif %} {% if a.get("repeat",[]) != [] %}
+      <p>
+        <b> Repeat:</b> {% for day in a.repeat %}
+        <span class="ui gray label">{{ day }} </span>
+        {% endfor %}
+      </p>
+      {% endif %}
+      <!-- {% if a.get("date","") != "" %}
+            <span class="ui gray label">Not Complete</span>
+            {% else %}
+            <span class="ui green label">Completed</span>
+            {% endif %} -->
+
+      <a class="ui blue button" href="/update/{{ a._id }}">Update</a>
+      <a class="ui red button" href="/deleteTask/{{ a._id }}">Delete</a>
+    </div>
+
+    {% endfor %}
+    {% endmacro %}

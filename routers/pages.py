@@ -5,6 +5,7 @@ from flask_jwt_extended import (
 )
 import json
 from bson import ObjectId
+from datetime import datetime
 # if u get cross origin error then use the below method before the router function
 # @cross_origin()
 
@@ -28,18 +29,31 @@ def pagesRouter(app,tasksDB):
         k=1
         err = session.get("errortask","")
         session["errortask"] = ""
+       
         for i in currentCollection.find({"owner":user.get("email","")}):
             i['num'] = k
             k+=1
+            i["prior"]=i.get("priority",3)
             i["priority"]=priorityMap[i.get("priority",3)]
             holder.append(i)
         
         #shows newer tasks first
         holder.reverse() 
         #sorts accoring to priority
-        holder.sort(key=lambda x: x.get('priority',3))
-        
-        return render_template("base.html",taskdata = holder,err=err)
+        holder.sort(key=lambda x: x.get('prior',3))
+        current_date = datetime.now().date()
+        tasktdy = []
+        print(current_date)
+        for i in holder:
+            if current_date.strftime("%A") in i.get("repeat",[]):
+                tasktdy.append(i)
+            if i.get("date","") != "":
+                date_object = datetime.strptime(i.get("date"), '%B %d, %Y %H:%M %p').date()
+                
+                if current_date == date_object:
+                    tasktdy.append(i)
+        print(tasktdy)
+        return render_template("base.html",taskdata = holder ,  tasktdy = tasktdy ,err=err)
 
 
     @app.route("/signup")
