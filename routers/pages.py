@@ -45,13 +45,14 @@ def pagesRouter(app,tasksDB):
         tasktdy = []
         #print(current_date)
         for i in holder:
-            if current_date.strftime("%A") in i.get("repeat",[]):
-                tasktdy.append(i)
-            elif i.get("date","") != "":
-                date_object = datetime.strptime(i.get("date"), '%B %d, %Y %H:%M %p').date()
-                
-                if current_date == date_object:
+            if i.get("date") and datetime.strptime(i.get("date"), '%B %d, %Y %H:%M %p').date() >= current_date:
+                if current_date.strftime("%A") in i.get("repeat",[]):
                     tasktdy.append(i)
+                elif i.get("date","") != "":
+                    date_object = datetime.strptime(i.get("date"), '%B %d, %Y %H:%M %p').date()
+                    
+                    if current_date == date_object:
+                        tasktdy.append(i)
         #print(tasktdy)
         return render_template("base.html",taskdata = holder ,  tasktdy = tasktdy ,err=err)
 
